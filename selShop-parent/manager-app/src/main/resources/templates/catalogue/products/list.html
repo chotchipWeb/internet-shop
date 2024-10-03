@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Список товаров &ndash; Сельмаг</title>
+</head>
+<body>
+<h1>Новый товар</h1>
+<a data-th-href="@{/catalogue/products/create}" >создать товар</a>
+
+<table>
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Товар</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr data-th-each="product : ${products}">
+        <td data-th-text="${product.id}"></td>
+        <td>
+            <a data-th-href="@{/catalogue/products/{productsId}(productsId=${product.id})}"
+               data-th-text="${product.title}"></a>
+        </td>
+    </tr>
+
+    </tbody>
+</table>
+</body>
+</html>

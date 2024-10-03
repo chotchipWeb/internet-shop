@@ -1,0 +1,15 @@
+spring:
+  jpa:
+    database: postgresql
+  datasource:
+    url: jdbc:postgresql://0.0.0.0:5433/products
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8082/realms/selmag

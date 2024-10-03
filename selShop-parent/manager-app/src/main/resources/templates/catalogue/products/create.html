@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Новый товар &ndash; Сельмаг</title>
+</head>
+<body>
+<h1>Новый товар</h1>
+
+<form method="post" data-th-action="@{/catalogue/products/create}">
+    <div data-th-if="${errors}">
+        <h2>Ошибки</h2>
+        <ul>
+            <li data-th-each="error : ${errors}" data-th-text="${error}"></li>
+        </ul>
+    </div>
+    <label>
+        Название: <br>
+        <input type="text" data-th-value="${dto?.title}" name="title">
+    </label>
+    <br>
+    <label>
+        Описание: <br>
+        <textarea data-th-text="${dto?.details}" name="details"></textarea>
+    </label>
+    <br>
+    <button type="submit">Создать</button>
+</form>
+<a data-th-href="@{/catalogue/products/list}" data-th-text="назад"></a>
+</body>
+</html>

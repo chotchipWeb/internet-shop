@@ -1,0 +1,4 @@
+selmag:
+  services:
+    catalogue:
+      url: http://localhost:8081

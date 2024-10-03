@@ -1,0 +1,27 @@
+version: "3.9"
+name: SelMag
+services:
+  postgresdb:
+    image: "postgres:${POSTGRES_VERSION}"
+    container_name: "postgres-db-cnt"
+    environment:
+      POSTGRES_DB: "products"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.6
+    container_name: "keycloak-cnt"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    command:
+      - "start-dev"
+    ports:
+      - "8082:8080"
+    volumes:
+      - ./config/keycloak/import:/opt/keycloak/data/import
+
