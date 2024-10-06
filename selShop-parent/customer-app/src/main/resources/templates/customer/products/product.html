@@ -18,10 +18,11 @@
     </ul>
 </div>
 <form method="post" data-th-action="@{/customer/products/{productId}/add-to-favourites(productId=${product.id})}"
-      data-th-if="${!inFavourite}">
+      data-th-if="!${inFavourite}">
     <button type="submit">Добавить в избранное</button>
 </form>
-<form method="post" data-th-action="@{/customer/products/{productId}/delete-from-favourites(productId=${product.id})}"
+<form method="post"
+      data-th-action="@{/customer/products/{productId}/delete-from-favourites(productId=${product.id})}"
       data-th-if="${inFavourite}">
     <button type="submit">Удалить из избранное</button>
 </form>
@@ -33,14 +34,14 @@
     <label> <input type="radio" name="rating" value="4">4</label>
     <label> <input type="radio" name="rating" value="5">5</label>
     <br>
-    <label><input data-th-text="text" name="review"></label>
+    <label><textarea data-th-text="${dto?.details}" name="details"></textarea></label>
     <button type="submit">отправить отзыв</button>
 </form>
 
 <ul>
     <li data-th-each="review : ${reviews}">
         <h3>[[${review.rating}]]*</h3>
-        <p data-th-text="review.details"></p>
+        <p data-th-text="${review.details}"></p>
     </li>
 </ul>
 </body>

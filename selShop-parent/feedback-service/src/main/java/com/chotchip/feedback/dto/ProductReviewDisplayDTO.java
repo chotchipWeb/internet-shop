@@ -1,4 +1,4 @@
-package com.chotchip.customer.dto;
+package com.chotchip.feedback.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductReviewCreateDTO {
-    private Integer rating;
-    private String details;
+public class ProductReviewDisplayDTO {
 
+    private int rating;
+    private String details;
 }
