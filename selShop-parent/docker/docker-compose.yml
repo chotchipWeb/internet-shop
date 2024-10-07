@@ -25,7 +25,7 @@ services:
     volumes:
       - ./config/keycloak/import:/opt/keycloak/data/import
   mongodb:
-    image: mongo:latest
+    image: mongo:8
     container_name: "mongo-db-cnt"
     ports:
       - "27017:27017"

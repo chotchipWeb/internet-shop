@@ -1,0 +1,9 @@
+= REST API Каталога
+:toc: right
+
+== REST API товара
+
+=== Получение списка товаров
+
+.Тело ответа
+include::{snippets}/catalogue/products/findAll/response-body.adoc[]

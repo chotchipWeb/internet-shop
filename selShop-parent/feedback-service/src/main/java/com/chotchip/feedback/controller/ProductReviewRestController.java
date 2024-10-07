@@ -4,6 +4,8 @@ import com.chotchip.feedback.dto.ProductReviewCreateDTO;
 import com.chotchip.feedback.dto.ProductReviewDisplayDTO;
 import com.chotchip.feedback.entity.ProductReview;
 import com.chotchip.feedback.service.ProductReviewService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +42,9 @@ public class ProductReviewRestController {
     }
 
     @GetMapping()
+    @Operation(
+            security = @SecurityRequirement(name = "keycloak")
+    )
     public Flux<ProductReviewDisplayDTO> findAllProductReviewByProductId(@PathVariable("productId") int productId) {
         return this.reviewService.findProductReviewById(productId);
     }
