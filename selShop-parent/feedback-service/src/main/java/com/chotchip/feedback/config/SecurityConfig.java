@@ -15,6 +15,7 @@ public class SecurityConfig {
         return http
                 .authorizeExchange(configurer -> configurer
                         .pathMatchers("/webjars/**", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
+                        .pathMatchers("/actuator/**").authenticated()
                         .anyExchange().authenticated())
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())

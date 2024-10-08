@@ -13,3 +13,32 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8082/realms/selmag
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8082/realms/selmag
+        registration:
+          keycloak:
+            client-id: catalogue-service-metrics-client
+            client-secret: oNzxIVGSSUHnQxsg8G44C86BrlxjKeI8
+            authorization-grant-type: client_credentials
+            scope:
+              - metrics_server
+  boot:
+    admin:
+      client:
+        instance:
+          name: catalogue-service
+          service-host-type: ip
+        url: http://localhost:8085
+        enabled: true
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'

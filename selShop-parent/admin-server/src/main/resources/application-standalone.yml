@@ -1,0 +1,25 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8082/realms/selmag
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8082/realms/selmag
+            user-name-attribute: preferred_username
+        registration:
+          keycloak:
+            client-id: admin-service-api
+            client-secret: DJLSUl4fgWM3VGLz9cyXMvqllDy6r6bs
+            authorization-grant-type: client_credentials
+            scope:
+              - metrics
+          login:
+            provider: keycloak
+            client-id: admin-service-api
+            client-secret: DJLSUl4fgWM3VGLz9cyXMvqllDy6r6bs
+            scope:
+              - metrics
+              - openid

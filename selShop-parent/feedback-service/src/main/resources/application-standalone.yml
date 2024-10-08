@@ -7,6 +7,25 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8082/realms/selmag
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8082/realms/selmag
+        registration:
+          keycloak:
+            client-id: feedback-service-metrics-client
+            client-secret: m6W7xqxCLU1Gm5ZbwqGUNFe2A11TObBq
+            authorization-grant-type: client_credentials
+            scope:
+              - metrics_server
+  boot:
+    admin:
+      client:
+        instance:
+          name: feedback-service
+          service-host-type: ip
+        url: http://localhost:8085
+        enabled: true
 springdoc:
   swagger-ui:
     oauth:
@@ -14,3 +33,13 @@ springdoc:
       use-pkce-with-authorization-code-grant: true
 keycloak:
   uri: http://localhost:8082
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
