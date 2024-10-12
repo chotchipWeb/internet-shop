@@ -39,8 +39,8 @@ public class SecurityBeans {
                         .requestMatchers("/actuator/**"))
                 .oauth2ResourceServer(customizer -> customizer.jwt(Customizer.withDefaults()))
                 .authorizeHttpRequests(customizer -> customizer
-                        .requestMatchers("/instances", "/instances/*").authenticated()
-                        .requestMatchers("/actuator/**").authenticated()
+                        .requestMatchers("/instances", "/instances/*").hasAuthority("SCOPE_metrics_server")
+                        .requestMatchers("/actuator/**").hasAuthority("SCOPE_metrics")
                         .anyRequest().denyAll()
                 )
 

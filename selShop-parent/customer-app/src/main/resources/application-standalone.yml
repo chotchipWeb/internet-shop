@@ -5,6 +5,14 @@ selmag:
     feedback:
       url: http://localhost:8084
 spring:
+  boot:
+    admin:
+      client:
+        instance:
+          name: customer-app
+          service-host-type: ip
+        url: http://localhost:8085
+        enabled: true
   security:
     oauth2:
       client:
@@ -15,8 +23,27 @@ spring:
         registration:
           keycloak:
             client-id: customer-app
-            client-secret: mK59woRtbfIe0I6ANCpy6S6wKSQY21Q6
+            client-secret: M1bhGCByxWDqVWeokJj6Z9sMGTI41lNc
             scope:
               - openid
               - view_catalogue
-
+          metrics:
+            provider: keycloak
+            client-id: customer-app-metrics-client
+            client-secret: 4od7dvSFlCt3y8KW9N7wWulBOH8Tcr5F
+            authorization-grant-type: client_credentials
+            scope:
+              - metrics_server
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8082/realms/selmag
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'

@@ -11,15 +11,15 @@ spring:
             user-name-attribute: preferred_username
         registration:
           keycloak:
-            client-id: admin-service-api
-            client-secret: DJLSUl4fgWM3VGLz9cyXMvqllDy6r6bs
+            client-id: admin-service
+            client-secret: 4mR9OIt3qadt22Dbbr5KC01lsRQ0qVcg
             authorization-grant-type: client_credentials
             scope:
               - metrics
           login:
             provider: keycloak
-            client-id: admin-service-api
-            client-secret: DJLSUl4fgWM3VGLz9cyXMvqllDy6r6bs
+            client-id: admin-service
+            client-secret: 4mR9OIt3qadt22Dbbr5KC01lsRQ0qVcg
             scope:
               - metrics
               - openid

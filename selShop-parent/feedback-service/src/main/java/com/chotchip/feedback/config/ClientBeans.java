@@ -11,14 +11,15 @@ import org.springframework.security.oauth2.client.registration.ReactiveClientReg
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServerOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.time.Duration;
+
 @Configuration
 public class ClientBeans {
 
     @Bean
     public RegistrationClient registrationClient(
             ReactiveClientRegistrationRepository clientRegistrationRepository,
-            ReactiveOAuth2AuthorizedClientService authorizedClientService,
-            ClientProperties clientProperties
+            ReactiveOAuth2AuthorizedClientService authorizedClientService
     ) {
         ServerOAuth2AuthorizedClientExchangeFilterFunction filter =
                 new ServerOAuth2AuthorizedClientExchangeFilterFunction(
@@ -28,6 +29,6 @@ public class ClientBeans {
         return new ReactiveRegistrationClient(WebClient.builder()
                 .filter(filter)
                 .build(),
-                clientProperties.getReadTimeout());
+                Duration.ofSeconds(3600));
     }
 }

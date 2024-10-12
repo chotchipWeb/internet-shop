@@ -1,0 +1,38 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8082/realms/selmag
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8082/realms/selmag
+            user-name-attribute: preferred_username
+        registration:
+          keycloak:
+            client-id: admin-service
+            client-secret: 4mR9OIt3qadt22Dbbr5KC01lsRQ0qVcg
+            authorization-grant-type: client_credentials
+            scope:
+              - metrics
+          login:
+            provider: keycloak
+            client-id: admin-service
+            client-secret: 4mR9OIt3qadt22Dbbr5KC01lsRQ0qVcg
+            scope:
+              - metrics
+              - openid
+          discovery:
+            provider: keycloak
+            client-id: admin-service
+            client-secret: 4mR9OIt3qadt22Dbbr5KC01lsRQ0qVcg
+            authorization-grant-type: client_credentials
+            scope:
+              - discovery
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/

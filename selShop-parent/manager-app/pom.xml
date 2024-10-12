@@ -48,6 +48,25 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+        </dependency>
+        <!-- Metrics-->
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-client</artifactId>
+            <version>3.3.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <!--        for eureka-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
         <!--        for test modules-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -83,17 +102,18 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
-<!--                    for integrated test-->
+                    <!--                    for integrated test-->
                     <classifier>exec</classifier>
                 </configuration>
                 <executions>
                     <execution>
                         <goals>
-<!--                            в толстый jar -->
+                            <!--                            в толстый jar -->
                             <goal>repackage</goal>
                         </goals>
                     </execution>
                 </executions>
+
             </plugin>
         </plugins>
     </build>

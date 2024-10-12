@@ -39,3 +39,5 @@ build/
 ##
 
 /docker/postgres/data/
+**/mvnw
+**/mvnw.cmd
