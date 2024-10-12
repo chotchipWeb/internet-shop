@@ -1,0 +1,6 @@
+spring:
+  config:
+    import: 'optional:configserver:'
+  cloud:
+    config:
+      uri: http://1234:pass@localhost:8888/

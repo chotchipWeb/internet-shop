@@ -1,0 +1,47 @@
+spring:
+  boot:
+    admin:
+      client:
+        enabled: false
+  jpa:
+    database: postgresql
+  datasource:
+    url: jdbc:postgresql://0.0.0.0:5433/products
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8082/realms/selmag
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8082/realms/selmag
+        registration:
+          keycloak:
+            client-id: catalogue-service-metrics-client
+            client-secret: LWRWGTNOni7xr9oIh52Wt6bS9jRcQy6Q
+            authorization-grant-type: client_credentials
+            scope:
+              - metrics_server
+          discovery:
+            provider: keycloak
+            client-id: catalogue-service-metrics-client
+            client-secret: LWRWGTNOni7xr9oIh52Wt6bS9jRcQy6Q
+            authorization-grant-type: client_credentials
+            scope:
+              - discovery
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'

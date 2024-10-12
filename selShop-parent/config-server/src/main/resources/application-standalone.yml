@@ -1,0 +1,10 @@
+spring:
+  security:
+    user:
+      name: 1234
+      password: pass
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: D:\web\project\shop\selShop-parent\config\{application}\{profile}
