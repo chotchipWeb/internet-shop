@@ -129,6 +129,7 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                    <!--                    для упаковки в толстый jar -->
                     <classifier>exec</classifier>
                 </configuration>
                 <executions>

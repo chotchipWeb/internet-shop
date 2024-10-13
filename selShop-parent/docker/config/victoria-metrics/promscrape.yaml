@@ -1,12 +1,12 @@
 scrape_configs:
   - job_name: selmag_manager_app
     static_configs:
-      - targets: [ "172.17.0.1:8080" ]
+      - targets: [ "host.docker.internal:8080" ]
     metrics_path: /actuator/prometheus
     oauth2:
       client_id: victoria-metrics
       client_secret: aiFwGAlmZdWnvrhehgvqwxRzyw1kUf5R
-      token_url: http://172.17.0.1:8082/realms/selmag/protocol/openid-connect/token
+      token_url: http://host.docker.internal:8082/realms/selmag/protocol/openid-connect/token
       scopes:
         - metrics
       endpoint_params:

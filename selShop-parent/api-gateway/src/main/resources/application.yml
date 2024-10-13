@@ -1,0 +1,34 @@
+server:
+  port: 8086
+  forward-headers-strategy: framework
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: catalogue-service
+          uri: lb://catalogue-service
+          predicates:
+            - Host=localhost.nip.io
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8082/realms/selmag
+            user-name-attribute: preferred_username
+        registration:
+          discovery:
+            provider: keycloak
+            client-id: api-gateway
+            client-secret: qfz5autp4QdjoBGsuvMOFsch4Q9tAmy9
+            authorization-grant-type: client_credentials
+            scope:
+              - discovery
+eureka:
+  client:
+    service-url:
+      defaultZone: http://172.20.0.4:8761/eureka
+  instance:
+    prefer-ip-address: true

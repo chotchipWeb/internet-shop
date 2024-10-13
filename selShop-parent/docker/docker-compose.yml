@@ -1,13 +1,14 @@
 version: "3.9"
 name: SelMag
 services:
+  #  инфраструктура
   postgresdb:
     image: "postgres:${POSTGRES_VERSION}"
     container_name: "postgres-db-cnt"
     environment:
       POSTGRES_DB: "products"
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
     ports:
       - "5433:5432"
     volumes:
@@ -30,17 +31,110 @@ services:
     container_name: "mongo-db-cnt"
     ports:
       - "27017:27017"
-  #    volumes:
-  #      - ./mongo:/data/db
-  victoria-metrics:
-    image: victoriametrics/victoria-metrics:stable
-    container_name: "victoria-metrics-cnt"
-    command: -promscrape.config=/promscrape.yaml -enableTCP6
-    ports:
-      - "8428:8428"
     volumes:
-      - ./config/victoria-metrics/promscrape.yaml:/promscrape.yaml
-#
-networks:
-  ps:
-    driver: bridge
+      - ./mongo:/data/db
+  #   сервисы
+  config-server:
+    image: 'chotchip/config-server:v1'
+    build:
+      context: ../
+      dockerfile: Dockerfile
+      args:
+        JAR_FILE: config-server/target/config-server-1.0-SNAPSHOT-exec.jar
+    environment:
+      SPRING_PROFILES_ACTIVE: docker,native
+      SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH_LOCATIONS: /config/{application}/{profile}
+    volumes:
+      - '../config:/config'
+    ports:
+      - '8888:8888'
+  eureka-server:
+    image: 'chotchip/eureka-server:v1'
+    build:
+      context: ../
+      dockerfile: Dockerfile
+      args:
+        JAR_FILE: eureka-server/target/eureka-server-1.0-SNAPSHOT-exec.jar
+    environment:
+      SPRING_PROFILES_ACTIVE: cloudconfig
+    ports:
+      - '8761:8761'
+    depends_on:
+      - keycloak
+      - config-server
+  admin-server:
+    image: 'chotchip/admin-server:v1'
+    build:
+      context: ../
+      dockerfile: Dockerfile
+      args:
+        JAR_FILE: admin-server/target/admin-server-1.0-SNAPSHOT-exec.jar
+    environment:
+      SPRING_PROFILES_ACTIVE: cloudconfig
+    ports:
+      - '8085:8085'
+    depends_on:
+      - eureka-server
+  # API app
+  catalogue-service:
+    image: 'chotchip/catalogue-service:v1'
+    build:
+      context: ../
+      dockerfile: Dockerfile
+      args:
+        JAR_FILE: catalogue-service/target/catalogue-service-1.0-SNAPSHOT-exec.jar
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5433/products
+      SPRING_PROFILES_ACTIVE: cloudconfig
+    ports:
+      - '8081:8081'
+    links:
+      - postgresdb
+    depends_on:
+      - eureka-server
+      - postgresdb
+  feedback-service:
+    image: 'chotchip/feedback-service:v2'
+    build:
+      context: ../
+      dockerfile: Dockerfile
+      args:
+        JAR_FILE: feedback-service/target/feedback-service-1.0-SNAPSHOT-exec.jar
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/feedback
+      SPRING_PROFILES_ACTIVE: cloudconfig
+    ports:
+      - '8084:8084'
+    links:
+      - mongodb
+    depends_on:
+      - eureka-server
+      - mongodb
+  #  UI app
+  manager-app:
+    image: 'chotchip/manager-app:v1'
+    build:
+      context: ../
+      dockerfile: Dockerfile
+      args:
+        JAR_FILE: manager-app/target/manager-app-1.0-SNAPSHOT-exec.jar
+    environment:
+      SPRING_PROFILES_ACTIVE: cloudconfig
+    ports:
+      - '8080:8080'
+    depends_on:
+      - catalogue-service
+  customer-app:
+    image: 'chotchip/customer-app:v1'
+    build:
+      context: ../
+      dockerfile: Dockerfile
+      args:
+        JAR_FILE: customer-app/target/customer-app-1.0-SNAPSHOT-exec.jar
+    environment:
+      SPRING_PROFILES_ACTIVE: cloudconfig
+    ports:
+      - '8083:8083'
+    depends_on:
+      - catalogue-service
+      - feedback-service
