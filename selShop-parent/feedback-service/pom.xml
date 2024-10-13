@@ -117,7 +117,18 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                    <!--                    для упаковки в толстый jar -->
+                    <classifier>exec</classifier>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <!--                            в толстый jar -->
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
             </plugin>
         </plugins>
     </build>

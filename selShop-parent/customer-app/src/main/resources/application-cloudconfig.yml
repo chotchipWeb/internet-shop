@@ -3,4 +3,4 @@ spring:
     import: 'optional:configserver:'
   cloud:
     config:
-      uri: http://1234:pass@localhost:8888/
+      uri: http://1234:pass@host.docker.internal:8888/

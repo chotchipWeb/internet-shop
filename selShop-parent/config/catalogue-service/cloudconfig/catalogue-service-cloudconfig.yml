@@ -16,11 +16,11 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8082/realms/selmag
+          issuer-uri: http://host.docker.internal:8082/realms/selmag
       client:
         provider:
           keycloak:
-            issuer-uri: http://localhost:8082/realms/selmag
+            issuer-uri: http://host.docker.internal:8082/realms/selmag
         registration:
           keycloak:
             client-id: catalogue-service-metrics-client
@@ -45,3 +45,9 @@ management:
     web:
       exposure:
         include: '*'
+eureka:
+  client:
+    service-url:
+      defaultZone: http://host.docker.internal:8761/eureka
+  instance:
+    prefer-ip-address: true
