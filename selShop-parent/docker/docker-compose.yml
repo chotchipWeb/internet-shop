@@ -49,7 +49,7 @@ services:
     ports:
       - '8888:8888'
   eureka-server:
-    image: 'chotchip/eureka-server:v1'
+    image: 'chotchip/eureka-server:v2'
     build:
       context: ../
       dockerfile: Dockerfile
