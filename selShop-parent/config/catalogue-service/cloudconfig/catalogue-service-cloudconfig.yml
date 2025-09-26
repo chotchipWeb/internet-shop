@@ -10,6 +10,10 @@ spring:
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
+  data:
+    redis:
+      port: 6379
+      host: http://host.docker.internal
   flyway:
     enabled: true
   security:
@@ -24,14 +28,14 @@ spring:
         registration:
           keycloak:
             client-id: catalogue-service-metrics-client
-            client-secret: LWRWGTNOni7xr9oIh52Wt6bS9jRcQy6Q
+            client-secret: aef91063-28d9-4814-bf56-7ab7bd78e278
             authorization-grant-type: client_credentials
             scope:
               - metrics_server
           discovery:
             provider: keycloak
             client-id: catalogue-service-metrics-client
-            client-secret: LWRWGTNOni7xr9oIh52Wt6bS9jRcQy6Q
+            client-secret: aef91063-28d9-4814-bf56-7ab7bd78e278
             authorization-grant-type: client_credentials
             scope:
               - discovery

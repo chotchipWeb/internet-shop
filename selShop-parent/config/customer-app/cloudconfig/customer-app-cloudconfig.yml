@@ -15,7 +15,7 @@ spring:
         registration:
           keycloak:
             client-id: customer-app
-            client-secret: M1bhGCByxWDqVWeokJj6Z9sMGTI41lNc
+            client-secret: c2028571-5165-4ecb-bea6-4ab6a40f84f1
             scope:
               - openid
               - view_catalogue
@@ -23,14 +23,14 @@ spring:
           metrics:
             provider: keycloak
             client-id: customer-app-metrics-client
-            client-secret: 4od7dvSFlCt3y8KW9N7wWulBOH8Tcr5F
+            client-secret: edb71f54-6245-4e6b-b741-b7871c62581b
             authorization-grant-type: client_credentials
             scope:
               - metrics_server
           discovery:
             provider: keycloak
             client-id: customer-app-metrics-client
-            client-secret: 4od7dvSFlCt3y8KW9N7wWulBOH8Tcr5F
+            client-secret: edb71f54-6245-4e6b-b741-b7871c62581b
             authorization-grant-type: client_credentials
             scope:
               - discovery

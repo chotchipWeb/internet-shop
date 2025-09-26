@@ -12,21 +12,21 @@ spring:
         registration:
           keycloak:
             client-id: admin-service
-            client-secret: 4mR9OIt3qadt22Dbbr5KC01lsRQ0qVcg
+            client-secret: a6b2da2e-771a-458b-922e-91df814258cb
             authorization-grant-type: client_credentials
             scope:
               - metrics
           login:
             provider: keycloak
             client-id: admin-service
-            client-secret: 4mR9OIt3qadt22Dbbr5KC01lsRQ0qVcg
+            client-secret: a6b2da2e-771a-458b-922e-91df814258cb
             scope:
               - metrics
               - openid
           discovery:
             provider: keycloak
             client-id: admin-service
-            client-secret: 4mR9OIt3qadt22Dbbr5KC01lsRQ0qVcg
+            client-secret: a6b2da2e-771a-458b-922e-91df814258cb
             authorization-grant-type: client_credentials
             scope:
               - discovery

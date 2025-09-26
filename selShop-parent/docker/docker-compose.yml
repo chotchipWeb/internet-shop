@@ -77,7 +77,7 @@ services:
       - eureka-server
   # API app
   catalogue-service:
-    image: 'chotchip/catalogue-service:v1'
+    image: 'chotchip/catalogue-service:v2'
     build:
       context: ../
       dockerfile: Dockerfile
