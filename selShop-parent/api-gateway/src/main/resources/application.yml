@@ -6,29 +6,28 @@ spring:
     name: api-gateway
   cloud:
     gateway:
-      routes:
-        - id: catalogue-service
-          uri: lb://catalogue-service
-          predicates:
-            - Host=localhost.nip.io
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
   security:
     oauth2:
       client:
         provider:
           keycloak:
-            issuer-uri: http://localhost:8082/realms/selmag
+            issuer-uri: http://host.docker.internal:8082/realms/selmag
             user-name-attribute: preferred_username
         registration:
           discovery:
             provider: keycloak
             client-id: api-gateway
-            client-secret: qfz5autp4QdjoBGsuvMOFsch4Q9tAmy9
+            client-secret: 8waoWd3s5nSFJCPpSvSsfQSxkh3zpZoP
             authorization-grant-type: client_credentials
             scope:
               - discovery
 eureka:
   client:
     service-url:
-      defaultZone: http://172.20.0.4:8761/eureka
+      defaultZone: http://host.docker.internal:8761/eureka/
   instance:
     prefer-ip-address: true

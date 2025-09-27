@@ -138,3 +138,17 @@ services:
     depends_on:
       - catalogue-service
       - feedback-service
+  api-gateway:
+     image: 'chotchip/api-gateway-app:v2'
+     build:
+       context: ../
+       dockerfile: Dockerfile
+       args:
+         JAR_FILE: api-gateway/target/api-gateway-1.0-SNAPSHOT-exec.jar
+     ports:
+       - '8086:8086'
+
+
+
+
+
