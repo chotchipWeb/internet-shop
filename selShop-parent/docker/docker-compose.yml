@@ -33,6 +33,13 @@ services:
       - "27017:27017"
     volumes:
       - ./mongo:/data/db
+  redis:
+    image: redis:7.2.4
+    container_name: redis-selmag
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis/data:/data
   #   сервисы
   config-server:
     image: 'chotchip/config-server:v1'

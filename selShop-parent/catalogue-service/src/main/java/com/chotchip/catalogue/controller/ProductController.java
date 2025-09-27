@@ -6,6 +6,9 @@ import com.chotchip.catalogue.exception.NotFoundProductException;
 import com.chotchip.catalogue.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -31,7 +34,10 @@ public class ProductController {
     private final ProductService productService;
     private final MessageSource messageSource;
 
+    private static final String ProductById = "PRODUCT_ID";
+
     @ModelAttribute("product")
+    @Cacheable(value = ProductById, key = "#id")
     public Product getProduct(@PathVariable("productId") int id) {
         return this.productService.findById(id)
                 .orElseThrow(NotFoundProductException::new);
@@ -43,6 +49,7 @@ public class ProductController {
     }
 
     @PutMapping
+    @CachePut(value = ProductById, key = "#id")
     public ResponseEntity<Void> updateProduct(@PathVariable("productId") int id,
                                               @Valid @RequestBody ProductUpdateDTO productUpdateDTO,
                                               BindingResult bindingResult) throws BindException {
@@ -58,6 +65,7 @@ public class ProductController {
     }
 
     @DeleteMapping
+    @CacheEvict(value = ProductById, key = "#id")
     public ResponseEntity<Void> deleteProduct(@PathVariable("productId") int id) {
         productService.deleteProduct(id);
         return ResponseEntity
