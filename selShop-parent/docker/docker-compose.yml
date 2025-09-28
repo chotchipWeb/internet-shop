@@ -42,7 +42,7 @@ services:
       args:
         JAR_FILE: config-server/target/config-server-1.0-SNAPSHOT-exec.jar
     environment:
-      SPRING_PROFILES_ACTIVE: docker,native
+      SPRING_PROFILES_ACTIVE: docker,native,standalone
       SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH_LOCATIONS: /config/{application}/{profile}
     volumes:
       - '../config:/config'
