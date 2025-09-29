@@ -30,7 +30,9 @@
 
 
 - чтобы запустить проект надо запустить docker compose и подождать пока запуситться keycloak
-  sh start-docker.bash
+
+mvn clean install -DskipTests
+
 
 
 

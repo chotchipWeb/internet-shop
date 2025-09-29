@@ -40,6 +40,8 @@ services:
       - "6379:6379"
     volumes:
       - ./redis/data:/data
+    networks:
+      - redis
   #   сервисы
   config-server:
     image: 'chotchip/config-server:v1'
@@ -82,9 +84,18 @@ services:
       - '8085:8085'
     depends_on:
       - eureka-server
+  api-gateway:
+    image: 'chotchip/api-gateway-app:v2'
+    build:
+      context: ../
+      dockerfile: Dockerfile
+      args:
+        JAR_FILE: api-gateway/target/api-gateway-1.0-SNAPSHOT-exec.jar
+    ports:
+      - '8086:8086'
   # API app
   catalogue-service:
-    image: 'chotchip/catalogue-service:v2'
+    image: 'chotchip/catalogue-service:v7'
     build:
       context: ../
       dockerfile: Dockerfile
@@ -97,9 +108,12 @@ services:
       - '8081:8081'
     links:
       - postgresdb
+      - redis
     depends_on:
       - eureka-server
       - postgresdb
+    networks:
+      - redis
   feedback-service:
     image: 'chotchip/feedback-service:v2'
     build:
@@ -145,16 +159,10 @@ services:
     depends_on:
       - catalogue-service
       - feedback-service
-  api-gateway:
-     image: 'chotchip/api-gateway-app:v2'
-     build:
-       context: ../
-       dockerfile: Dockerfile
-       args:
-         JAR_FILE: api-gateway/target/api-gateway-1.0-SNAPSHOT-exec.jar
-     ports:
-       - '8086:8086'
 
+networks:
+  redis:
+    driver: bridge
 
 
 

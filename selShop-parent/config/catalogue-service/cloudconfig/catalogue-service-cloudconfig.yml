@@ -13,7 +13,7 @@ spring:
   data:
     redis:
       port: 6379
-      host: http://host.docker.internal
+      host: host.docker.internal
   flyway:
     enabled: true
   security:

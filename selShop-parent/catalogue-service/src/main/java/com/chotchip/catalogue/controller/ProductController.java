@@ -6,9 +6,7 @@ import com.chotchip.catalogue.exception.NotFoundProductException;
 import com.chotchip.catalogue.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -30,17 +28,20 @@ import java.util.Locale;
 @RestController
 @RequestMapping("catalogue-api/products/{productId:\\d+}")
 @RequiredArgsConstructor
+@Slf4j
 public class ProductController {
+
     private final ProductService productService;
+
     private final MessageSource messageSource;
 
-    private static final String ProductById = "PRODUCT_ID";
-
     @ModelAttribute("product")
-    @Cacheable(value = ProductById, key = "#id")
     public Product getProduct(@PathVariable("productId") int id) {
-        return this.productService.findById(id)
+        log.debug("Fetching product with id={}", id);
+        Product product = this.productService.findById(id)
                 .orElseThrow(NotFoundProductException::new);
+        log.debug("Successfully fetched product: {}", product.getId());
+        return product;
     }
 
     @GetMapping
@@ -49,15 +50,20 @@ public class ProductController {
     }
 
     @PutMapping
-    @CachePut(value = ProductById, key = "#id")
     public ResponseEntity<Void> updateProduct(@PathVariable("productId") int id,
                                               @Valid @RequestBody ProductUpdateDTO productUpdateDTO,
                                               BindingResult bindingResult) throws BindException {
         if (bindingResult.hasErrors()) {
-            if (bindingResult instanceof BindException exception) throw exception;
-            else throw new BindException(bindingResult);
+            if (bindingResult instanceof BindException exception) {
+                log.warn("Validation failed: {}", bindingResult.getAllErrors());
+                throw exception;
+            }
+            log.warn("Validation failed: {}", bindingResult.getAllErrors());
+            throw new BindException(bindingResult);
+
         } else {
             productService.updateProduct(id, productUpdateDTO);
+            log.debug("Update product with id: {}", id);
             return ResponseEntity
                     .noContent()
                     .build();
@@ -65,9 +71,11 @@ public class ProductController {
     }
 
     @DeleteMapping
-    @CacheEvict(value = ProductById, key = "#id")
+
     public ResponseEntity<Void> deleteProduct(@PathVariable("productId") int id) {
+        log.info("Received request to delete product with id={}", id);
         productService.deleteProduct(id);
+        log.info("Product with id={} deleted successfully", id);
         return ResponseEntity
                 .noContent()
                 .build();
@@ -75,6 +83,7 @@ public class ProductController {
 
     @ExceptionHandler(NotFoundProductException.class)
     public ResponseEntity<ProblemDetail> handlerNotFoundProductException(NotFoundProductException e, Locale locale) {
+        log.warn("Attempted to delete non-existing product. Reason: {}", e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND,
                         this.messageSource.getMessage(e.getMessage(), new Object[0], "Not found Product", locale)));

@@ -5,6 +5,7 @@ import com.chotchip.catalogue.entity.Product;
 import com.chotchip.catalogue.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -15,17 +16,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/catalogue-api/products")
 @RequiredArgsConstructor
+@Slf4j
 public class ProductsController {
+
     private final ProductService productService;
 
     @GetMapping
     public Iterable<Product> getAllProducts() {
+        log.debug("Fetching all products");
         return this.productService.findAllProducts();
     }
 
@@ -33,12 +36,18 @@ public class ProductsController {
     public ResponseEntity<Product> createProduct(@Valid @RequestBody ProductCreateDTO productCreateDTO,
                                                  UriComponentsBuilder uriComponentsBuilder,
                                                  BindingResult bindingResult) throws BindException {
+        log.debug("Create product dto: {}", productCreateDTO);
         if (bindingResult.hasErrors()) {
-            if (bindingResult instanceof BindException exception) throw exception;
-            else throw new BindException(bindingResult);
+            if (bindingResult instanceof BindException exception) {
+                log.warn("Validation failed: {}", bindingResult.getAllErrors());
+                throw exception;
+            }
+            log.warn("Validation failed: {}", bindingResult.getAllErrors());
+            throw new BindException(bindingResult);
+
         } else {
             Product product = this.productService.createProduct(productCreateDTO);
-            // uriComponentBuilder тут используется для того, чтобы показать, где находится сущность
+            log.debug("Successful create product with id: {}", product.getId());
             return ResponseEntity
                     .created(uriComponentsBuilder
                             .replacePath("/catalogue-api/products/{productId}")
