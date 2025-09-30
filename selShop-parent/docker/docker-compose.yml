@@ -19,13 +19,21 @@ services:
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HEALTH_ENABLED: true
     command:
       - "start-dev"
       - "--import-realm"
     ports:
       - "8082:8080"
+      - "9000:9000"
     volumes:
       - ./config/keycloak/import:/opt/keycloak/data/import
+    healthcheck:
+      test: ["CMD-SHELL", "{ printf 'HEAD /health/ready HTTP/1.0\\r\\n\\r\\n' >&0; grep 'HTTP/1.0 200'; } 0<>/dev/tcp/localhost/9000"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
   mongodb:
     image: mongo:8
     container_name: "mongo-db-cnt"
@@ -69,8 +77,10 @@ services:
     ports:
       - '8761:8761'
     depends_on:
-      - keycloak
-      - config-server
+      config-server:
+        condition: service_started
+      keycloak:
+         condition: service_healthy
   admin-server:
     image: 'chotchip/admin-server:v1'
     build:
@@ -93,6 +103,8 @@ services:
         JAR_FILE: api-gateway/target/api-gateway-1.0-SNAPSHOT-exec.jar
     ports:
       - '8086:8086'
+    depends_on:
+      - eureka-server
   # API app
   catalogue-service:
     image: 'chotchip/catalogue-service:v7'
