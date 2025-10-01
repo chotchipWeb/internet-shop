@@ -31,7 +31,7 @@ services:
     volumes:
       - ./config/keycloak/import:/opt/keycloak/data/import
     healthcheck:
-      test: ["CMD-SHELL", "{ printf 'HEAD /health/ready HTTP/1.0\\r\\n\\r\\n' >&0; grep 'HTTP/1.0 200'; } 0<>/dev/tcp/localhost/9000"]
+      test: [ "CMD-SHELL", "{ printf 'HEAD /health/ready HTTP/1.0\\r\\n\\r\\n' >&0; grep 'HTTP/1.0 200'; } 0<>/dev/tcp/localhost/9000" ]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -89,7 +89,7 @@ services:
       config-server:
         condition: service_started
       keycloak:
-         condition: service_healthy
+        condition: service_healthy
     networks:
       - general
   admin-server:
@@ -108,12 +108,14 @@ services:
     networks:
       - general
   api-gateway:
-    image: 'chotchip/api-gateway-app:v2'
+    image: 'chotchip/api-gateway:v10'
     build:
       context: ../
       dockerfile: Dockerfile
       args:
         JAR_FILE: api-gateway/target/api-gateway-1.0-SNAPSHOT-exec.jar
+    environment:
+      SPRING_PROFILES_ACTIVE: cloudconfig
     ports:
       - '8086:8086'
     depends_on:

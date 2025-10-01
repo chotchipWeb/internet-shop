@@ -10,6 +10,10 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
+  boot:
+    admin:
+      client:
+        enabled: false
   security:
     oauth2:
       client:
@@ -40,3 +44,13 @@ eureka:
       defaultZone: http://host.docker.internal:8761/eureka/
   instance:
     prefer-ip-address: true
+management:
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
