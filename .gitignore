@@ -41,3 +41,6 @@ build/
 /docker/postgres/data/
 **/mvnw
 **/mvnw.cmd
+docker/mongo/**
+docker/redis/**
+
